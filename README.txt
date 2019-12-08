@@ -9,3 +9,5 @@ Python 3.7
 
 --python packages--
 ElasticSearch
+csv
+codecs

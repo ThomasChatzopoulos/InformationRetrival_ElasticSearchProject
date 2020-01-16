@@ -18,6 +18,7 @@ for item in users:
     usersMatrix.append(tempVector)
 
 clusterer = hdbscan.HDBSCAN()
-
+clusterer.fit(usersMatrix)
+print(clusterer.labels_)
 # for item in usersMatrix:
 #     print(item)

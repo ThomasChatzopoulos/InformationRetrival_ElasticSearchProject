@@ -1,4 +1,3 @@
-from elasticsearch import helpers, Elasticsearch
 import csv
 import codecs
 

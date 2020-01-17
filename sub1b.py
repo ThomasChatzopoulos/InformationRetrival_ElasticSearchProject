@@ -21,7 +21,7 @@ score_array = []  # pinakas telikhs ba8mologias
 mo = []  # mesos oros [x,y]: X: id tainias, y: mo
 ratings_file = []
 
-with open('ratings.csv', mode='r') as csv_file:  # diabasma arxeiou ratings
+with open('datasets/ratings.csv', mode='r') as csv_file:  # diabasma arxeiou ratings
     print("Process: Reading File ...")
     temp_ratings_file = csv.reader(csv_file)
     # print(temp_ratings_file)

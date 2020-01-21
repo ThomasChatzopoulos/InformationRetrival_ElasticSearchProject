@@ -15,11 +15,8 @@ def calc_mean(x):
 es = Elasticsearch()
 
 ratings = pd.read_csv('datasets/ratings.csv')
-print(ratings)
-
 movies_mo = ratings.groupby('movieId', as_index=False)['rating'].mean()
 
-# metric_results = pd.DataFrame()
 while True:
     query = input('Write your query:')
     if(query == 'q'):

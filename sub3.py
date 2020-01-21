@@ -3,7 +3,7 @@ import json
 
 movies = []
 genres = []
-genresPop = {}
+# genresPop = {}
 with open('datasets/movies.csv',encoding='utf8') as f:
     reader = csv.DictReader(f)
     for row in reader:
@@ -13,12 +13,12 @@ with open('datasets/movies.csv',encoding='utf8') as f:
             for genre in splt:
                 if(not genre in genres):
                     genres.append(genre)
-                    genresPop.update({genre:1})
-                else:
-                    genresPop[genre] +=1
+                #     genresPop.update({genre:1})
+                # else:
+                #     genresPop[genre] +=1
 
 print(genres)
-print('Genres population:',genresPop)
+# print('Genres population:',genresPop)
 # print(movies)
 
 ratings = []
@@ -51,7 +51,7 @@ for row in ratings:
             # users[-1][genre] = users[-1][genre]/movieCounter -=-=-=-=
             # users[-1][genre] = round(users[-1][genre], 3) -=-=-=-=-
         # print('users[-1] after:',users[-1])
-        movieCounter = 0
+        movieCounter = 1
         temp = {'userId':row['userId']}
         temp.update(genresDict)
         users.append(temp)
@@ -63,14 +63,14 @@ for row in ratings:
             if(movie['movieId'] ==  row['movieId']):
                 movieGenres = movie['genres'].split('|')
                 movieGenresNotIncluded = []
-                #assumption that 2.5 is the indifferent ranking ---
-                for genre in genres:
-                    if(not genre in movieGenres):
-                        movieGenresNotIncluded.append(genre)
-                # print('not included:',movieGenresNotIncluded)
-                for genreName in movieGenresNotIncluded:
-                    users[-1][genreName] += 2.5
-                #assumption end ----------------------------------
+                # #assumption that 2.5 is the indifferent ranking ---
+                # for genre in genres:
+                #     if(not genre in movieGenres):
+                #         movieGenresNotIncluded.append(genre)
+                # # print('not included:',movieGenresNotIncluded)
+                # for genreName in movieGenresNotIncluded:
+                #     users[-1][genreName] += 2.5
+                # #assumption end ----------------------------------
                 for genreName in movieGenres:
                     users[-1][genreName] += float(row['rating'])
                 # print(users[-1])

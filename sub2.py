@@ -42,4 +42,6 @@ while True:
     metric_results = metric_results.merge(ratings[['movieId','rating']].loc[ratings['userId'] == user_id],left_on='movieId',right_on='movieId',how='left')
     metric_results['new_score'] = metric_results[['es_score', 'mo_rating','rating']].values.tolist()
     metric_results['new_score'] = metric_results['new_score'].apply(calc_mean)
-    print(metric_results.sort_values(by='new_score',ascending=False))
+    df_es_source['movieId'] = df_es_source['movieId'].apply(int)
+    metric_results = metric_results.merge(df_es_source[['movieId','title']],left_on='movieId',right_on='movieId')
+    print(metric_results[['title','new_score']].sort_values(by='new_score',ascending=False).to_string(index=False))

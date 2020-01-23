@@ -1,14 +1,17 @@
 This is an academic Project for the course of Information Retrival
 
-Its a custom Search Engine based on ElasticSearch that searches specific data types and scores them
-The data that was tested on is the movies.csv and ratings.csv in the folder datasets
+Its a custom Search Engine based on ElasticSearch that searches specific data types and scores them using a custom metric
+The data that was tested on is the datasets/movies.csv and datasets/ratings.csv
 
 --Requirements--
 ElasticSearch 7.4.2
 Python 3.7
 
 --python packages--
-ElasticSearch
-csv
-codecs
- else
+elasticsearch         7.1.0
+hdbscan               0.8.24
+numpy                 1.17.4
+pandas                0.25.3
+pip                   19.3.1
+plotly                4.4.1
+scikit-learn          0.22.1

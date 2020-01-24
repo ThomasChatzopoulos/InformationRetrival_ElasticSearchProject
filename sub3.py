@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import time
 from sklearn.cluster import KMeans
 
 def clustering_results(resultMatrix,algorithmName):

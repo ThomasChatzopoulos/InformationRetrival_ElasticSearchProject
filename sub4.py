@@ -36,11 +36,6 @@ df_matrix = df_pairs.drop(columns=['terms_vector'])
 df_matrix['movieId'] = df_matrix['movieId'].apply(int)
 df_matrix = df_matrix.sort_values(by='movieId')
 df_matrix = df_matrix.reset_index(drop=True)
-# print(df_matrix)
-
-# df_movies = pd.read_csv('datasets/movies.csv')
-# df_movies['genres'] = df_movies['genres'].apply(lambda x:x.split('|'))
-
 
 mlb = MultiLabelBinarizer()
 
@@ -48,21 +43,18 @@ df_movies = pd.read_csv('datasets/movies.csv')
 df_movies['genres'] = df_movies['genres'].apply(lambda x:x.split('|'))
 mlb_df = pd.DataFrame(mlb.fit_transform(df_movies['genres']),columns=mlb.classes_,index=df_movies['genres'].index)
 df_movies = df_movies.merge(mlb_df,left_index=True,right_index=True)
-# print(df_movies)
 
 df_matrix = df_matrix.merge(df_movies,left_on='movieId',right_on='movieId')
 df_matrix = df_matrix.drop(columns=['genres'])
-# print(df_matrix)
 
 df_ratings = pd.read_csv('datasets/ratings.csv',
                         usecols = ['userId', 'movieId', 'rating'], 
                         dtype = {'userId':'int64','movieId' : 'int64','rating':'float64'}
                         )
-# print(df_ratings)
+
 df_movies_rated = pd.DataFrame(df_ratings['movieId'].unique(),columns=['movieId'])
 df_movies_rated = df_movies_rated.sort_values(by='movieId')
 df_movies_rated = df_movies_rated.reset_index(drop=True)
-# print(df_movies_rated)
 
 df_matrix = df_matrix.merge(df_movies_rated,on='movieId',how='inner')
 # for col in df_matrix.columns: 

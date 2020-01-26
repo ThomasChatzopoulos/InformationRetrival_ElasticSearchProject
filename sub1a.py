@@ -1,5 +1,4 @@
 import csv
-import codecs
 from elasticsearch import helpers, Elasticsearch
 
 es = Elasticsearch()

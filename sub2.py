@@ -1,8 +1,7 @@
-import csv
 import pandas as pd
 import numpy as np
 
-from elasticsearch import helpers, Elasticsearch
+from elasticsearch import Elasticsearch
 
 def calc_mean(x):
     counter = sums = 0

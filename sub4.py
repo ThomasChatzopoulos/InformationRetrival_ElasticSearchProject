@@ -1,7 +1,6 @@
-import pandas as pd
-import numpy as np
-from elasticsearch import Elasticsearch
 import math
+import pandas as pd
+from elasticsearch import Elasticsearch
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.svm import SVC
 

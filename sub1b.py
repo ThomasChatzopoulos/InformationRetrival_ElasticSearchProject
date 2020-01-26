@@ -1,5 +1,5 @@
 import pandas as pd
-from elasticsearch import helpers, Elasticsearch
+from elasticsearch import Elasticsearch
 
 es = Elasticsearch()
 

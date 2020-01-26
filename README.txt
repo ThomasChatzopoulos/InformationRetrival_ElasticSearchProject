@@ -5,11 +5,10 @@ The data that was tested on is the datasets/movies.csv and datasets/ratings.csv
 
 --Requirements--
 ElasticSearch 7.4.2
-Python 3.7
+Python 3.8
 
 --python packages--
 elasticsearch         7.1.0
-hdbscan               0.8.24
 numpy                 1.17.4
 pandas                0.25.3
 pip                   19.3.1

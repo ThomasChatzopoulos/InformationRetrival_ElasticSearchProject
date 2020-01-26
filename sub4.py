@@ -3,6 +3,9 @@ import pandas as pd
 from elasticsearch import Elasticsearch
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.svm import SVC
+from sklearn import preprocessing
+from sklearn import utils
+from sklearn.metrics import accuracy_score
 
 def extract_tf_idf(dictionary,n_documents):
     for term in dictionary:
@@ -57,26 +60,22 @@ df_movies_rated = df_movies_rated.sort_values(by='movieId')
 df_movies_rated = df_movies_rated.reset_index(drop=True)
 
 df_matrix = df_matrix.merge(df_movies_rated,on='movieId',how='inner')
-# for col in df_matrix.columns: 
-#     print(col) 
-# for _type in df_matrix.dtypes:
-#     print(_type)
 
-# # df_matrix.to_csv('mlvectors.csv')
-# testing_user = df_ratings.loc[df_ratings['userId']==1]
-# # print(testing_user)
-# df_test = df_matrix.merge(testing_user,on='movieId',how='inner')
-# # print(df_test)
+lab_enc = preprocessing.LabelEncoder()
 
-# train_x = df_test.drop(columns=['rating','movieId','title'],axis=1)
-# # print(train_x)
-# for _type in train_x.dtypes:
-#     print(_type)
-# train_y = df_test['rating']
-# # print(train_y)
-
-# model = SVC()
-# model.fit(train_x,train_y)
-
-# predict_train = model.predict(train_x)
-# # print('Target on train data',predict_train) 
+users_ids = df_ratings['userId'].unique()
+print(users_ids)
+for i in users_ids:
+    user = df_ratings.loc[df_ratings['userId']==i]
+    df_test = df_matrix.merge(user,on='movieId',how='inner')
+    train_x = df_test.drop(columns=['rating','movieId','title'],axis=1)
+    train_y = df_test['rating']
+    training_scores_encoded = lab_enc.fit_transform(train_y)
+    train_y = train_y.astype('int')
+    model = SVC()
+    model.fit(train_x,train_y)
+    predict_train = model.predict(train_x)
+    print(i,training_scores_encoded)
+    print(i,predict_train) 
+    accuracy_train = accuracy_score(train_y,predict_train)
+    print(i,'accuracy_score on train dataset : ' ,accuracy_train)

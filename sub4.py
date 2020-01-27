@@ -42,9 +42,11 @@ df_matrix = df_matrix.reset_index(drop=True)
 
 mlb = MultiLabelBinarizer()
 
-df_movies = pd.read_csv('datasets/movies.csv')
+df_movies = pd.read_csv('datasets/movies.csv',usecols = ['movieId', 'genres'])
 df_movies['genres'] = df_movies['genres'].apply(lambda x:x.split('|'))
 mlb_df = pd.DataFrame(mlb.fit_transform(df_movies['genres']),columns=mlb.classes_,index=df_movies['genres'].index)
+mlb_df = mlb_df.drop(columns='(no genres listed)')
+mlb_df = mlb_df.add_suffix('_genre')
 df_movies = df_movies.merge(mlb_df,left_index=True,right_index=True)
 
 df_matrix = df_matrix.merge(df_movies,left_on='movieId',right_on='movieId')
@@ -54,7 +56,7 @@ df_ratings = pd.read_csv('datasets/ratings.csv',
                         usecols = ['userId', 'movieId', 'rating'], 
                         dtype = {'userId':'int64','movieId' : 'int64','rating':'float64'}
                         )
-
+df_ratings = df_ratings.rename(columns={"rating": "user_rating"})
 df_movies_rated = pd.DataFrame(df_ratings['movieId'].unique(),columns=['movieId'])
 df_movies_rated = df_movies_rated.sort_values(by='movieId')
 df_movies_rated = df_movies_rated.reset_index(drop=True)
@@ -64,18 +66,30 @@ df_matrix = df_matrix.merge(df_movies_rated,on='movieId',how='inner')
 lab_enc = preprocessing.LabelEncoder()
 
 users_ids = df_ratings['userId'].unique()
-print(users_ids)
-for i in users_ids:
-    user = df_ratings.loc[df_ratings['userId']==i]
-    df_test = df_matrix.merge(user,on='movieId',how='inner')
-    train_x = df_test.drop(columns=['rating','movieId','title'],axis=1)
-    train_y = df_test['rating']
-    training_scores_encoded = lab_enc.fit_transform(train_y)
-    train_y = train_y.astype('int')
-    model = SVC()
-    model.fit(train_x,train_y)
-    predict_train = model.predict(train_x)
-    print(i,training_scores_encoded)
-    print(i,predict_train) 
-    accuracy_train = accuracy_score(train_y,predict_train)
-    print(i,'accuracy_score on train dataset : ' ,accuracy_train)
+
+user = df_ratings.loc[df_ratings['userId']==2]
+df_test = df_matrix.merge(user,on='movieId',how='inner')
+for name in df_test:
+    columnsum = df_test[name].sum()
+    if(columnsum == 0):
+        df_test = df_test.drop(columns=[name])
+df_test.to_csv('mltesting.csv',index=False)
+
+# print(user)
+# print(users_ids)
+# for i in users_ids:
+#     user = df_ratings.loc[df_ratings['userId']==i]
+#     df_test = df_matrix.merge(user,on='movieId',how='inner')
+#     train_x = df_test.drop(columns=['rating','movieId','title'],axis=1)
+#     train_x = train_x.apply(lambda x:x*10)
+#     train_y = df_test['rating']
+#     train_y['rating'] = train_y['rating'].apply(lambda x:x*10)
+#     training_scores_encoded = lab_enc.fit_transform(train_y)
+#     train_y = train_y.astype('int')
+#     model = SVC()
+#     model.fit(train_x,train_y)
+#     predict_train = model.predict(train_x)
+#     print(i,training_scores_encoded)
+#     print(i,predict_train) 
+#     accuracy_train = accuracy_score(train_y,predict_train)
+#     print(i,'accuracy_score on train dataset : ' ,accuracy_train)

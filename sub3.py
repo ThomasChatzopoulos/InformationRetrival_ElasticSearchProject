@@ -50,3 +50,4 @@ for user in users.userId:
 ratings_tail = pd.DataFrame({'userId':userId_tail,'movieId':movieId_tail,'rating':rating_tail,'cluster':[-1 for i in range(len(userId_tail))]})
 ratings = ratings.append(ratings_tail,ignore_index=True) #Add produced rating data to existing
 print(ratings)
+ratings.to_csv('datasets/ratings.csv',index=False)
